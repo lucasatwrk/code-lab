@@ -1,0 +1,10 @@
+ssl/
+
+# --- python
+__pycache__/
+*.pyc
+*.pyd
+
+venv/
+env/
+
