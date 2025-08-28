@@ -1,0 +1,9 @@
+# https://verilator.org/guide/latest/install.html#verilator-executable-docker-container
+services:
+  verilator:
+    image: verilator/verilator:latest
+    entrypoint: [ "tail", "-f", "/dev/null" ]
+    init: true
+    volumes:
+      - ./:/work
+    user: ${UID}:${GID}
