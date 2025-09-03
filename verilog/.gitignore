@@ -3,3 +3,4 @@ obj_dir/
 *.o
 *.a
 *.vcd
+temp/

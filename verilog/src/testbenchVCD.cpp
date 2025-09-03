@@ -7,7 +7,7 @@
 vluint64_t main_time = 0; 
 
 double sc_time_stamp(int len) {
-     return (main_time%len);
+    return (main_time%len);
 }
 
 int main(int argc, char **argv) {

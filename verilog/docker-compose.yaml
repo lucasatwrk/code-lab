@@ -1,7 +1,14 @@
 # https://verilator.org/guide/latest/install.html#verilator-executable-docker-container
 services:
   verilator:
-    image: verilator/verilator:latest
+    # image: verilator/verilator:latest
+    build:
+      context: .
+      args:
+        - SYSTEMC_VERSION=3.0.1
+      tags:
+        - verilator/verilator:local-dev
+        - lucasatwrk/verilator:sc-3.0.1
     entrypoint: [ "tail", "-f", "/dev/null" ]
     init: true
     volumes:
