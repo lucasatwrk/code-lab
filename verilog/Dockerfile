@@ -1,0 +1,23 @@
+FROM verilator/verilator:latest AS build
+ARG SYSTEMC_VERSION=3.0.1
+ENV SYSTEMC_PREFIX=/usr/local/systemc-${SYSTEMC_VERSION}
+ENV SYSTEMC_INCLUDE=${SYSTEMC_PREFIX}/include
+ENV SYSTEMC_LIBDIR=${SYSTEMC_PREFIX}/lib-linux64
+
+RUN apt update && apt install -y curl \
+    && curl -o /tmp/systemc-${SYSTEMC_VERSION}.tgz -L https://github.com/accellera-official/systemc/archive/refs/tags/${SYSTEMC_VERSION}.tar.gz \
+    && tar xzf /tmp/systemc-${SYSTEMC_VERSION}.tgz -C /tmp \
+    && mkdir -p /tmp/systemc-${SYSTEMC_VERSION}/build && cd /tmp/systemc-${SYSTEMC_VERSION}/build \
+    && touch /tmp/systemc-${SYSTEMC_VERSION}/docs/DEVELOPMENT.md \
+    && ../configure --prefix=/usr/local/systemc-${SYSTEMC_VERSION} \
+    && make -j
+
+FROM verilator/verilator:latest
+ARG SYSTEMC_VERSION=3.0.1
+ENV SYSTEMC_PREFIX=/usr/local/systemc-${SYSTEMC_VERSION}
+ENV SYSTEMC_INCLUDE=${SYSTEMC_PREFIX}/include
+ENV SYSTEMC_LIBDIR=${SYSTEMC_PREFIX}/lib-linux64
+COPY --from=build /tmp/systemc-${SYSTEMC_VERSION} /tmp/systemc-${SYSTEMC_VERSION}
+RUN cd /tmp/systemc-${SYSTEMC_VERSION}/build \
+    && make install \
+    && cd ${HOME} && rm -rf /tmp/systemc-${SYSTEMC_VERSION}*
