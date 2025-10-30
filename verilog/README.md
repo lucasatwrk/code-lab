@@ -2,6 +2,7 @@
 
 * https://hackmd.io/@chtsai/S1wLTsQvj
 * https://github.com/verilator/verilator/blob/master/ci/docker/run/verilator-wrap.sh
+* [VaporView](https://github.com/Lramseyer/vaporview) - Waveform viewer extension for Visual Studio Code
 
 ```sh
 verilator --cc --main src/adder4.v src/fulladder.v src/testbench.cpp
@@ -12,9 +13,38 @@ make -c obj_dir -f Vadder4.mk
 verilator --cc --build --exe src/adder4.v src/fulladder.v src/testbench.cpp
 ```
 
+# cmake
+
+```sh
+cmake -S . -B build -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON && cmake --build build
+cmake -E env "PATH=/path/to/add:${PATH}" <command>
+
+# message(DEBUG "...")
+cmake -S . -B build --log-level DEBUG
+
+# --debug-output/--trace for cmake internal status
+cmake -S . -B build --debug-output
+```
+
 # Dev Container
 
 * [dev container - user](https://stackoverflow.com/a/78621662)
+
+Download .vsix
+
+* https://stackoverflow.com/a/79565372
+
+```sh
+DEV_CONTAINER_ID=ms-vscode-remote.remote-containers
+# TARGET_PLATFORM=win32-x64
+
+# ms-python.python
+# https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/2024.17.2024100401/vspackage?targetPlatform=win32-x64
+
+dl_url="https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode-remote/vsextensions/remote-containers/0.426.0/vspackage"
+
+curl -Lo devcontainer-0.426.0.vsix "${dl_url}"
+```
 
 Dockerfile
 
