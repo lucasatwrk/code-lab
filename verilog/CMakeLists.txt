@@ -13,3 +13,5 @@ verilate(tb_fan SOURCES ${CMAKE_SOURCE_DIR}/src/fan.sv DIRECTORY ${CMAKE_BINARY_
 add_executable(tb_sc ${CMAKE_SOURCE_DIR}/src/testbench_sc.cpp)
 verilate(tb_sc SOURCES ${CMAKE_SOURCE_DIR}/src/fa4.sv ${CMAKE_SOURCE_DIR}/src/fa.sv DIRECTORY ${CMAKE_BINARY_DIR}/build_sc TOP_MODULE fa4 SYSTEMC TRACE_VCD --Wall)
 verilator_link_systemc(tb_sc)
+
+add_subdirectory(basic)
