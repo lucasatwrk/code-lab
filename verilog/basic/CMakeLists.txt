@@ -26,3 +26,13 @@ verilate(tb_led_stream SOURCES ${PROJECT_SOURCE_DIR}/hdl/led_stream.sv ${PROJECT
     VERILATOR_ARGS -GBASE_FREQ=${LED_BASE_FREQ})
 # somehow set `VERILATOR_ARGS -CFLAGS "-DBASE_FREQ=${LED_BASE_FREQ}"` option in verilate not working, use `target_compile_definitions` instead
 target_compile_definitions(tb_led_stream PRIVATE BASE_FREQ=${LED_BASE_FREQ})
+
+# --- 7 segment
+
+set(SEG_BASE_FREQ 1000)
+add_executable(tb_segment_bcd_encoder ${PROJECT_SOURCE_DIR}/testbench/tb_segment_bcd_encoder.cpp)
+verilate(tb_segment_bcd_encoder SOURCES ${PROJECT_SOURCE_DIR}/hdl/segment_driver.sv DIRECTORY ${PROJECT_BINARY_DIR}/build_segment_bcd_encoder PREFIX Vsegment_bcd_encoder TOP_MODULE segment_bcd_encoder TRACE_VCD --Wall)
+
+add_executable(tb_segment_driver ${PROJECT_SOURCE_DIR}/testbench/tb_segment_driver.cpp)
+verilate(tb_segment_driver SOURCES ${PROJECT_SOURCE_DIR}/hdl/segment_driver.sv DIRECTORY ${PROJECT_BINARY_DIR}/build_segment_driver PREFIX Vsegment_driver TOP_MODULE segment_driver TRACE_VCD
+    VERILATOR_ARGS -GBASE_FREQ=${SEG_BASE_FREQ})
