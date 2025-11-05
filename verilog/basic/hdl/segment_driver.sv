@@ -1,7 +1,8 @@
 module segment_driver #(parameter
     BASE_FREQ = 50_000_000,
     ACTIVE_RATE = 100,
-    DIGITS = 6
+    DIGITS = 6,
+    LOW_ACTIVE = 0
 )(
     input logic clk,
     input logic [$clog2(10**DIGITS)-1:0] num,
@@ -17,9 +18,11 @@ module segment_driver #(parameter
     logic [$clog2(DIGITS):0] c_dig;
     logic [DIGITS-1:0] c_sel;
     logic [7:0] c_seg;
-    assign dig = c_seg;
-    assign sel = c_sel;
+    assign dig = LOW_ACTIVE ? ~c_seg : c_seg;
+    assign sel = LOW_ACTIVE ? ~c_sel : c_sel;
     segment_bcd_encoder sbe (.num(c_num), .seg(c_seg[6:0]));
+
+    logic [31:0] divisor;
 
     always_ff @ (posedge clk) begin
         $display("[%d] num: %d, c_dig: %d, c_sel: %d, c_num: %d", counter, num, c_dig, c_sel, c_num);
@@ -35,7 +38,12 @@ module segment_driver #(parameter
         c_dig = counter / ACTIVE_CYCLE;
         c_sel = 1 << c_dig;
         /* verilator lint_off WIDTHTRUNC */
-        c_num = (num / (10**c_dig)) % 10;
+        divisor = 1;
+        for (int i = 0; i < c_dig; i++) begin
+            divisor = (divisor << 3) + (divisor << 1);  // divisor * 10 (avoid using multiplication)
+        end
+        /* verilator lint_off WIDTHEXPAND */
+        c_num = (num / divisor) % 10;
         c_seg[7] = dp[c_dig];
     end
 

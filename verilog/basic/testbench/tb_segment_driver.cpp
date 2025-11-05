@@ -114,9 +114,11 @@ int main(int argc, char*argv[]) {
     dut->final();
 
     printf(" --- \nError cycles: %ld\n", err_list.size());
-    for(auto &ei : err_list) {
-        printf("Cycle: %d, DIG: %02X, SEL: %06b, EXP[dig]: %d, EXP[num]: %d, EXP[dp]: %d\n",
-            ei->cycle, ei->dut_dig, ei->dut_sel, ei->exp_dig, ei->exp_num, ei->exp_dp);
+    if(getenv("LIST_ERR") != nullptr) {
+        for(auto &ei : err_list) {
+            printf("Cycle: %d, DIG: %02X, SEL: %06b, EXP[dig]: %d, EXP[num]: %d, EXP[dp]: %d\n",
+                ei->cycle, ei->dut_dig, ei->dut_sel, ei->exp_dig, ei->exp_num, ei->exp_dp);
+        }
     }
     
     return 0;
