@@ -36,3 +36,4 @@ verilate(tb_segment_bcd_encoder SOURCES ${PROJECT_SOURCE_DIR}/hdl/segment_driver
 add_executable(tb_segment_driver ${PROJECT_SOURCE_DIR}/testbench/tb_segment_driver.cpp)
 verilate(tb_segment_driver SOURCES ${PROJECT_SOURCE_DIR}/hdl/segment_driver.sv DIRECTORY ${PROJECT_BINARY_DIR}/build_segment_driver PREFIX Vsegment_driver TOP_MODULE segment_driver TRACE_VCD
     VERILATOR_ARGS -GBASE_FREQ=${SEG_BASE_FREQ})
+target_compile_definitions(tb_segment_driver PRIVATE BASE_FREQ=${SEG_BASE_FREQ})

@@ -12,7 +12,7 @@ module segment_driver #(parameter
     localparam ACTIVE_CYCLE = BASE_FREQ / ACTIVE_RATE;
     localparam FULL_CYCLE = ACTIVE_CYCLE * DIGITS;
 
-    logic [31:0] counter;
+    logic [31:0] counter = 0;
     logic [3:0] c_num;
     logic [$clog2(DIGITS):0] c_dig;
     logic [DIGITS-1:0] c_sel;
@@ -22,22 +22,22 @@ module segment_driver #(parameter
     segment_bcd_encoder sbe (.num(c_num), .seg(c_seg[6:0]));
 
     always_ff @ (posedge clk) begin
+        $display("[%d] num: %d, c_dig: %d, c_sel: %d, c_num: %d", counter, num, c_dig, c_sel, c_num);
         if(counter >= FULL_CYCLE - 1) begin
             counter <= 0;
         end else begin
-            /* verilator lint_off WIDTHTRUNC */
-            c_dig <= counter / ACTIVE_CYCLE;
-            c_sel <= 1 << c_dig;
-            /* verilator lint_off WIDTHTRUNC */
-            c_num <= (num / (10**c_dig)) % 10;
-            $display("[%d] num: %d, c_dig: %d, c_sel: %d, c_num: %d", counter, num, c_dig, c_sel, c_num);
-            c_seg[7] <= dp[c_dig];
             counter <= counter + 1;
         end
     end
 
-    // always_comb begin
-    // end
+    always_comb begin
+        /* verilator lint_off WIDTHTRUNC */
+        c_dig = counter / ACTIVE_CYCLE;
+        c_sel = 1 << c_dig;
+        /* verilator lint_off WIDTHTRUNC */
+        c_num = (num / (10**c_dig)) % 10;
+        c_seg[7] = dp[c_dig];
+    end
 
 endmodule
 
