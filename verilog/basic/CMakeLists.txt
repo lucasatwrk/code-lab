@@ -37,3 +37,9 @@ add_executable(tb_segment_driver ${PROJECT_SOURCE_DIR}/testbench/tb_segment_driv
 verilate(tb_segment_driver SOURCES ${PROJECT_SOURCE_DIR}/hdl/segment_driver.sv DIRECTORY ${PROJECT_BINARY_DIR}/build_segment_driver PREFIX Vsegment_driver TOP_MODULE segment_driver TRACE_VCD
     VERILATOR_ARGS -GBASE_FREQ=${SEG_BASE_FREQ})
 target_compile_definitions(tb_segment_driver PRIVATE BASE_FREQ=${SEG_BASE_FREQ})
+
+# --- keypad
+
+add_executable(tb_keypad ${PROJECT_SOURCE_DIR}/testbench/tb_keypad.cpp)
+verilate(tb_keypad SOURCES ${PROJECT_SOURCE_DIR}/hdl/keypad.sv DIRECTORY ${PROJECT_BINARY_DIR}/build_keypad PREFIX Vkeypad TOP_MODULE keypad TRACE_VCD --Wall)
+
