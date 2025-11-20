@@ -26,6 +26,31 @@ cmake -S . -B build --log-level DEBUG
 cmake -S . -B build --debug-output
 ```
 
+# SystemC
+
+```sh
+SYSTEMC_VERSION=3.0.1
+SYSTEMC_PREFIX=/usr/local/systemc-${SYSTEMC_VERSION}
+
+# download
+curl -o /tmp/systemc-${SYSTEMC_VERSION}.tgz -L https://github.com/accellera-official/systemc/archive/refs/tags/${SYSTEMC_VERSION}.tar.gz \
+    && tar xzf /tmp/systemc-${SYSTEMC_VERSION}.tgz -C /tmp
+
+# configure (3.0.1 missing `docs/DEVELOPMENT.md`)
+mkdir -p /tmp/systemc-${SYSTEMC_VERSION}/build && cd /tmp/systemc-${SYSTEMC_VERSION}/build \
+    && touch /tmp/systemc-${SYSTEMC_VERSION}/docs/DEVELOPMENT.md \
+    && ../configure --prefix=${SYSTEMC_PREFIX} --with-arch-suffix= \
+    && make -j \
+    && make install
+
+# cmake
+cmake -S /tmp/systemc-${SYSTEMC_VERSION} -B /tmp/systemc-${SYSTEMC_VERSION}/build \
+    -DCMAKE_INSTALL_PREFIX=${SYSTEMC_PREFIX} \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    && cmake --build /tmp/systemc-${SYSTEMC_VERSION}/build \
+    && cmake --install /tmp/systemc-${SYSTEMC_VERSION}/build
+```
+
 # Dev Container
 
 * [dev container - user](https://stackoverflow.com/a/78621662)

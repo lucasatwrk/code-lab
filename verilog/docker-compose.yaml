@@ -10,6 +10,8 @@ services:
         - verilator/verilator:local-dev
         - lucasatwrk/verilator:5.040-sc-3.0.1
     entrypoint: [ "tail", "-f", "/dev/null" ]
+    environment:
+      - CCACHE_DIR=/tmp/.ccache
     init: true
     volumes:
       - ./:/work
