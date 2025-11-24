@@ -1,0 +1,10 @@
+[Unit]
+Description=My App
+
+[Service]
+Type=simple
+ExecStart=uv run -m fastapi run app.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+[project]
+name = "myapp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiohttp>=3.13.2",
+    "fastapi[standard]>=0.121.3",
+    "pydantic>=2.12.4",
+    "pydantic-settings>=2.12.0",
+    "uvicorn>=0.38.0",
+]
